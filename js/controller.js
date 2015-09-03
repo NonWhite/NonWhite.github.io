@@ -97,7 +97,6 @@ var controller = (function () {
 			// solve problem
 			var method = view.getSearchType();
 			result = searchStrategies[method](p);
-
 		} while (goals.length > 0 && result === null);
 
 		var solution = result.solution;
@@ -115,7 +114,7 @@ var controller = (function () {
 			var info = solution.length + ";";
 			info    += result.generated + ";";
 			info    += result.expanded + ";";
-			info    += result.ramification.toFixed(2) + "\n";
+			info    += result.ramification.toFixed(2) ;
 			console.log(info);
 
 			// update view

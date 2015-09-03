@@ -126,7 +126,8 @@ var manhattanDistance = function ( s1 , s2 ){
 
 var manhattanDistanceAdmissible = function (s1, s2) {
 	// Modifique o cálculo da distância de manhattan para tornar a heurística admissível
-	return Math.abs( s1.tetromino.ypos - s2.tetromino.ypos )
+	var X = Math.abs( s1.tetromino.xpos - s2.tetromino.xpos )
+	return X + 1
 } ;
 
 
@@ -157,7 +158,7 @@ var BestFS = function (problem) {
 	pqueue.put( init )
 	while( !pqueue.empty() ){
 		node = pqueue.get()
-		visited.add( node.state.toString() )
+		visited.add( node.state )
 		result.expanded += 1
 		if( problem.GoalTest( node.state ) ){
 			result.solution = node.getPath()
@@ -168,7 +169,7 @@ var BestFS = function (problem) {
 			var state = problem.Result( node.state , act )
 			var new_h = h( state )
 			var depth = node.depth + problem.StepCost( node.state , act )
-			if( !visited.hasElement( state.toString() ) ){
+			if( !visited.hasElement( state ) ){
 				next = new Node( act , node , state , depth , null , new_h )
 				result.generated += 1
 				pqueue.put( next )
@@ -197,7 +198,7 @@ var ASTAR = function (problem) {
 
 	// Implemente a busca A* com busca em grafo
 	var g = function( node , action ){
-		return node.depth + problem.StepCost( node.state , action )
+		return node.g + problem.StepCost( node.state , action )
 	}
 	var h = function( state ){
 		return manhattanDistanceAdmissible( state , problem.goalState )
@@ -211,7 +212,7 @@ var ASTAR = function (problem) {
 	pqueue.put( init )
 	while( !pqueue.empty() ){
 		node = pqueue.get()
-		visited.add( node.state.toString() )
+		visited.add( node.state )
 		result.expanded += 1
 		if( problem.GoalTest( node.state ) ){
 			result.solution = node.getPath()
@@ -223,7 +224,7 @@ var ASTAR = function (problem) {
 			var new_g = g( node , act )
 			var new_h = h( state )
 			var depth = new_g
-			if( !visited.hasElement( state.toString() ) ){
+			if( !visited.hasElement( state ) ){
 				next = new Node( act , node , state , depth , new_g , new_h )
 				result.generated += 1
 				pqueue.put( next )
